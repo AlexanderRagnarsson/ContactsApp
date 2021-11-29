@@ -8,7 +8,7 @@ import styles from './styles';
 import callNumber from '../../services/phonecalls';
 
 const Contact = ({
-  id, name, phoneNumber, photo,
+  name, phoneNumber, photo,
 }) => (
   <View style={styles.view}>
     {/* <View>
@@ -42,7 +42,7 @@ const Contact = ({
 );
 
 Contact.propTypes = {
-  id: PropTypes.number.isRequired,
+  // id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   phoneNumber: PropTypes.string.isRequired,
   photo: PropTypes.string.isRequired,

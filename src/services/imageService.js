@@ -15,16 +15,25 @@ const getPermission = async (permissionTypes) => {
 };
 
 export const selectFromCameraRoll = async () => {
-
+  await getPermission([CAMERA_ROLL]);
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    quality: 1,
+    base64: true,
+    aspect: [1, 1],
+  });
+  if (result.cancelled) return '';
+  return result.uri;
 };
 
 export const takePhoto = async () => {
   await getPermission([CAMERA, CAMERA_ROLL]);
   const result = await ImagePicker.launchCameraAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    quality: 0.8,
+    quality: 1,
     base64: true,
-    aspect: [16, 9],
+    aspect: [1, 1],
   });
 
   if (result.cancelled) return '';

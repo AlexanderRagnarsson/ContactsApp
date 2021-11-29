@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  View, Text, TouchableOpacity, Animated,
+  View, Text, TouchableOpacity, Animated, Image,
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
@@ -16,9 +16,8 @@ const PhotoSelection = ({ value, onChange }) => {
     return newImage.filename;
   };
 
-  const takePhoto = async () => {
-    let image = await imageService.takePhoto();
-
+  const processPhoto = async (photoIn) => {
+    let image = photoIn;
     if (image.length > 0) {
       image = await addImage(image);
     }
@@ -30,7 +29,15 @@ const PhotoSelection = ({ value, onChange }) => {
     });
   };
 
-  const selectFromCameraRoll = () => {};
+  const takePhoto = async () => {
+    const image = await imageService.takePhoto();
+    processPhoto(image);
+  };
+
+  const selectFromCameraRoll = async () => {
+    const image = await imageService.selectFromCameraRoll();
+    processPhoto(image);
+  };
 
   // <TextInput
   //   styles={styles.textInput}
@@ -40,26 +47,28 @@ const PhotoSelection = ({ value, onChange }) => {
   // />
 
   return (
-    <View>
-      <Animated.Image
-        style={styles.image}
-        source={{ uri: photo }}
-      />
+    <View styles={styles.view}>
+      <View style={styles.imageView}>
+        <Animated.Image
+          style={styles.image}
+          source={{ uri: photo }}
+        />
+      </View>
       <TouchableOpacity
         onPress={() => takePhoto()}
       >
-        <Text>
+        <Text style={styles.text}>
           {'Take new photo with camera '}
-          <Entypo styles={styles.icon} name="camera" />
+          <Entypo name="camera" />
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => selectFromCameraRoll()}
       >
-        {/* <Text>
-          {'Select new photo form camera roll '}
-          <Entypo styles={styles.icon} name="image" />
-        </Text> */}
+        <Text style={styles.text}>
+          {'Select photo from camera roll '}
+          <Entypo name="image" />
+        </Text>
       </TouchableOpacity>
     </View>
   );
