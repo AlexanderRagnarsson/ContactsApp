@@ -1,50 +1,32 @@
 import * as FileSystem from 'expo-file-system';
 
-const contactDirectory = `${FileSystem.contactDirectory}contacts`;
+const imageDirectory = `${FileSystem.documentDirectory}`;
 
-const copyFile = async (file, newLocation) => {
-  return await FileSystem.copyAsync({
+const loadImage = async (filename) => {
+  const image = await FileSystem.readAsStringAsync(`${imageDirectory}/${filename}`, {
+    encoding: FileSystem.EncodingType.Base64,
+  });
+  return image;
+};
+
+export const copyFile = async (file, newLocation) => {
+  const newLoc = await FileSystem.copyAsync({
     from: file,
     to: newLocation,
   });
+  return newLoc;
 };
 
-const setupDirectory = async () => {
-  const dir = await FileSystem.getInfoAsync(contactDirectory);
-  if (!dir.exists) {
-    await FileSystem.makeDirectoryAsync(contactDirectory);
-  }
-};
+export const addImage = async (imageLocation) => {
+  const foldersplit = imageLocation.split('/');
+  const filename = foldersplit[foldersplit.length - 1];
 
-export const addContact = async contactLocation => {
-  const folderSplit = contactLocation.split('/');
-  const fileName = folderSplit[folderSplit.length - 1];
-
-  await copyFile(contactLocation, `${contactDirectory}/${fileName}`);
+  await copyFile(imageLocation, `${imageDirectory}/${filename}`);
 
   return {
-    name: fileName,
-    type: 'contact',
-    file: await loadContact(fileName)
+    name: filename,
+    type: 'image',
+    file: await loadImage(filename),
+    filename: `${imageDirectory}/${filename}`,
   };
-};
-
-const loadContact = async fileName => {
-  return await FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`, {
-    encoding: FileSystem.EncodingType.Base64
-  });
-};
-
-export const getAllContacts = async () => {
-  await setupDirectory();
-
-  const result = await FileSystem.readDirectoryAsync(contactDirectory);
-
-  return Promise.all(result.map(async (fileName) => {
-    return {
-      name: fileName,
-      type: 'contact',
-      file: await loadContact(fileName)
-    }
-  }));
 };
