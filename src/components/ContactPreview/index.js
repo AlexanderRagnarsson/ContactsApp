@@ -14,10 +14,10 @@ const ContactPreview = ({
       style={styles.touchable}
       onPress={() => navigate('ContactDetails', { id })}
     >
-      <View>
+      <View style={styles.view}>
         <Animated.Image
           style={styles.photo}
-          source={photo}
+          source={{ uri: photo }}
         />
         <Text style={styles.name}>{name}</Text>
       </View>
