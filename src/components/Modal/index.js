@@ -18,7 +18,7 @@ const Modal = ({
     style={styles.modal}
   >
     <View style={styles.body}>
-      <Text>{title}</Text>
+      <Text style={styles.title}>{title}</Text>
       {children}
       <Button
         title="Cancel"

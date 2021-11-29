@@ -5,6 +5,6 @@ export default StyleSheet.create({
   },
   textInput: {
     fontSize: 26,
-    paddingLeft: 4,
+    paddingLeft: 6,
   },
 });
