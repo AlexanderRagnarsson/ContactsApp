@@ -35,7 +35,7 @@ const Contact = ({
     >
       <View style={styles.iconNumber}>
         <AntDesign name="edit" size={60} color="black" />
-        <Text style={styles.phoneNumberText}>Edit contact</Text>
+        <Text style={styles.editText}>Edit contact</Text>
       </View>
     </TouchableHighlight>
   </View>

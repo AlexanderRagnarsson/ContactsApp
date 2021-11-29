@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   View: {
-    flex: 1,
+    backgroundColor: 'lightgray',
   },
   view: {
     // flex: 3,
@@ -33,8 +33,15 @@ export default StyleSheet.create({
   },
   phoneNumberText: {
     fontSize: 48,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     paddingHorizontal: 15,
+    color: '#2986cc',
+  },
+  editText: {
+    fontSize: 48,
+    // fontWeight: 'bold',
+    paddingHorizontal: 15,
+    color: '#2986cc',
   },
   iconNumber: {
     flexDirection: 'row',
