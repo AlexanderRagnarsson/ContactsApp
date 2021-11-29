@@ -12,13 +12,15 @@ const ContactPreview = ({
   <View style={styles.PreviewView}>
     <TouchableHighlight
       style={styles.touchable}
-      onPress={() => navigate('ContactDetail', { id })}
+      onPress={() => navigate('ContactDetails', { id })}
     >
-      <Animated.Image
-        style={styles.photo}
-        source={photo}
-      />
-      <Text style={styles.name}>{name}</Text>
+      <View>
+        <Animated.Image
+          style={styles.photo}
+          source={photo}
+        />
+        <Text style={styles.name}>{name}</Text>
+      </View>
     </TouchableHighlight>
   </View>
 );

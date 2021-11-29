@@ -5,9 +5,16 @@ function Reducer(state, action) {
   if (state === undefined) {
     return {
       ...data,
+      search: '',
     };
   }
   switch (action.type) {
+    case 'UPDATE_CURRENT_CONTACTS':
+      return { ...state, currentContacts: action.payload };
+    case 'ADD_CONTACT':
+      return { ...state, contacts: [...state.contacts, action.payload] };
+    case 'UPDATE_SEARCH':
+      return { ...state, search: action.payload };
     default:
       return state;
   }
