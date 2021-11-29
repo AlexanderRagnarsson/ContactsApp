@@ -1,11 +1,15 @@
 import data from '../../resources/data.json';
-import fileserf from '../../resources/fileserf';
+import { getAllContacts, addContact } from '../../services/fileserf';
 
+const dire = getAllContacts();
+
+console.log(dire);
+console.log(data);
 // eslint-disable-next-line default-param-last
 function Reducer(state, action) {
   if (state === undefined) {
     return {
-      ...data,
+      ...dire,
       search: '',
     };
   }
