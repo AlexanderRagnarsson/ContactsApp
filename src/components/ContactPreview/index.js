@@ -16,7 +16,7 @@ const ContactPreview = ({
         id, name, phoneNumber, photo,
       })}
     >
-      <View>
+      <View style={styles.view}>
         <Animated.Image
           style={styles.photo}
           source={{ uri: photo }}
