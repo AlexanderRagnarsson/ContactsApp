@@ -21,7 +21,7 @@ module.exports = {
     'react/function-component-definition': [
       2,
       {
-        namedComponents: 'function-declaration',
+        namedComponents: 'arrow-function',
       },
     ],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
