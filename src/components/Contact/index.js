@@ -1,12 +1,17 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
 
-const Contact = (id, name, phoneNumber, photo) => (
+const Contact = ({
+  id, name, phoneNumber, photo,
+}) => (
   <View style={styles.View}>
     <Text style={styles.Text}>{id}</Text>
-    <Image style={styles.photo} src={photo} />
+    <Animated.Image
+      style={styles.photo}
+      source={{ uri: photo }}
+    />
     <View style={styles.NameView}>
       <Text style={styles.nameText}>{name}</Text>
     </View>
