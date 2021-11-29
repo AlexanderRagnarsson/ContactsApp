@@ -11,6 +11,8 @@ import styles from './styles';
 const Contacts = ({ navigation: { navigate } }) => {
   const dispatch = useDispatch();
   const { currentContacts } = useSelector((state) => state);
+  console.log(currentContacts);
+
   const [addModalOpen, setAddModalOpen] = useState(false);
 
   const setCurrentContacts = (newContacts) => {
