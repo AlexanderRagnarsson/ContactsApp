@@ -6,15 +6,24 @@ function Reducer(state, action) {
     return {
       ...data,
       search: '',
+      addModalOpen: false,
     };
   }
   switch (action.type) {
-    case 'UPDATE_CURRENT_CONTACTS':
+    case 'SET_CURRENT_CONTACTS':
       return { ...state, currentContacts: action.payload };
     case 'ADD_CONTACT':
       return { ...state, contacts: [...state.contacts, action.payload] };
-    case 'UPDATE_SEARCH':
-      return { ...state, search: action.payload };
+    case 'SET_SEARCH':
+      return {
+        ...state,
+        search: action.payload,
+        // currentContacts: [...(state.contacts.filter(
+        //   (contact) => contact.name.includes(action.payload),
+        // ))],
+      };
+    case 'SET_ADD_MODAL_OPEN':
+      return { ...state, addModalOpen: action.payload };
     default:
       return state;
   }

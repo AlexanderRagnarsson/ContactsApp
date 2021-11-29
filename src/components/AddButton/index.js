@@ -5,21 +5,19 @@ import { AntDesign } from '@expo/vector-icons';
 import styles from './styles';
 
 const AddButton = ({ onAdd, addString }) => (
-  <View style={styles.view}>
-    <TouchableHighlight
-      style={styles.touchableHighlight}
-      onPress={onAdd}
-    >
-      <View>
-        <Text style={styles.text}>
-          {addString}
-        </Text>
-        <Text style={styles.plus}>
-          <AntDesign name="plus" size={30} color="black" />
-        </Text>
-      </View>
-    </TouchableHighlight>
-  </View>
+  <TouchableHighlight
+    style={styles.touchableHighlight}
+    onPress={() => onAdd()}
+  >
+    <View style={styles.container}>
+      <Text style={styles.text}>
+        {addString}
+      </Text>
+      <Text>
+        <AntDesign name="plus" size={30} color="black" />
+      </Text>
+    </View>
+  </TouchableHighlight>
 );
 
 AddButton.propTypes = {
