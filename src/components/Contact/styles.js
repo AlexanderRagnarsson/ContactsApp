@@ -11,8 +11,8 @@ export default StyleSheet.create({
     paddingTop: 10,
   },
   photo: {
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 200,
     borderRadius: 300 / 2,
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -23,7 +23,7 @@ export default StyleSheet.create({
     marginRight: 'auto',
   },
   nameText: {
-    fontSize: 48,
+    fontSize: 30,
     fontWeight: 'bold',
   },
   phoneNumberView: {
@@ -32,13 +32,13 @@ export default StyleSheet.create({
     marginRight: 'auto',
   },
   phoneNumberText: {
-    fontSize: 48,
+    fontSize: 30,
     // fontWeight: 'bold',
     paddingHorizontal: 15,
     color: '#2986cc',
   },
   editText: {
-    fontSize: 48,
+    fontSize: 30,
     // fontWeight: 'bold',
     paddingHorizontal: 15,
     color: '#2986cc',
