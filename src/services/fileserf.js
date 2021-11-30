@@ -32,10 +32,10 @@ const setupDirectory = async () => {
 };
 
 const loadContact = async (fileName) => {
-  console.log('hello?');
-  console.log(fileName);
-  await FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`, {
-    encoding: FileSystem.EncodingType.Base64,
+  // console.log('hello?');
+  // console.log(fileName);
+  await FileSystem.readDirectoryAsync(`${contactDirectory}`, {
+    encoding: FileSystem.EncodingType.UTF8,
   });
 };
 
@@ -46,7 +46,7 @@ export const addContact = async (contactLocation) => {
   await copyFile(contactLocation, `${contactDirectory}/${contactLocation}`);
 
   return {
-    name: contactLocation,
+    name: 'hello',
     type: 'contact',
     file: await loadContact(contactLocation),
   };

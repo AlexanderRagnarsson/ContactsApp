@@ -3,7 +3,7 @@ import data from '../../resources/data.json';
 import { getAllContacts, addContact } from '../../services/fileserf';
 
 const dire = getAllContacts();
-const add = addContact('danni');
+const add = addContact('danni-2.json');
 const newDire = getAllContacts();
 
 console.log(dire);
