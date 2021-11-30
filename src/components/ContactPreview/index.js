@@ -14,7 +14,7 @@ const ContactPreview = ({
       style={styles.touchable}
       onPress={() => navigate('ContactDetails', { id })}
     >
-      <View>
+      <View style={styles.view}>
         <Animated.Image
           style={styles.photo}
           source={{ uri: photo }}

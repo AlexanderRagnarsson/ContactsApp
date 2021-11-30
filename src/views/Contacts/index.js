@@ -9,24 +9,71 @@ import AddContactModal from '../../components/AddContactModal';
 import styles from './styles';
 
 const Contacts = ({ navigation: { navigate } }) => {
+  // To add new contacts
   const dispatch = useDispatch();
-  const { currentContacts } = useSelector((state) => state);
-  console.log(currentContacts);
+  // All of the contacts
+  const { contacts } = useSelector((state) => state);
 
+  // Is the modal to add a new contact open
   const [addModalOpen, setAddModalOpen] = useState(false);
+  // The current term in the search bar
+  const [search, setSearch] = useState('');
+  // The currently shown contacts
+  const [currentContacts, setCurrentContacts] = useState(
+    // Sort the contacts after name
+    contacts.sort(
+      (a, b) => {
+        if (a.name > b.name) return 1;
+        if (a.name < b.name) return -1;
+        return 0;
+      },
+    ),
+  );
 
-  const setCurrentContacts = (newContacts) => {
-    dispatch({ type: 'UPDATE_CURRENT_CONTACTS', payload: newContacts });
+  // Only get the contacts that fulfill the search criteria
+  const filterContacts = (searchTerm) => (
+    contacts.filter((contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
+  // Check if arrays are eual
+  function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+
+    for (let i = 0; i < a.length; i += 1) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+
+  // Checks to see if we have to update the current contacts
+  const checkContacts = (searchTerm) => {
+    const filteredContacts = filterContacts(searchTerm);
+    if (!arraysEqual(filteredContacts, currentContacts)) {
+      setCurrentContacts(filteredContacts);
+    }
   };
 
+  // Update the search term and check for new contacts
+  const updateSearch = (newSearch) => {
+    checkContacts(newSearch);
+    setSearch(newSearch);
+  };
+
+  // Add a new contact
   const submit = (newContact) => {
-    dispatch({ type: 'ADD_CONTACT', payload: newContact });
+    const nextId = contacts.reduce((prev, curr) => (curr.id >= prev ? (curr.id + 1) : prev), 0);
+    dispatch({ type: 'ADD_CONTACT', payload: { ...newContact, id: nextId } });
   };
+
+  checkContacts(search);
 
   return (
     <View style={styles.container}>
       <SearchBar
-        setCurrentContacts={setCurrentContacts}
+        search={search}
+        setSearch={updateSearch}
       />
       <AddButton
         onAdd={() => setAddModalOpen(true)}
