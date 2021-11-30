@@ -4,25 +4,26 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import * as Contactz from 'expo-contacts';
+import * as Contacts from 'expo-contacts';
 // import styles from './styles';
 
 const ImportContacts = (props) => {
   const { submit } = props;
   const addContactsFromOS = async () => {
-    const { status } = await Contactz.requestPermissionsAsync();
-    console.log(status);
-    console.log(submit);
+    const { status } = await Contacts.requestPermissionsAsync();
+    // console.log(status);
     if (status === 'granted') {
-      const { data } = await Contactz.getContactsAsync({
-        fields: [Contactz.Fields.PhoneNumbers, Contactz.Fields.RawImage],
+      console.log('Access to contacts granted!\n');
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.RawImage],
       });
       if (data.length > 0) {
+        console.log('Importing contacts:');
         data.forEach((contactFromOs) => {
           const imgToAdd = (contactFromOs.imageAvailable ? contactFromOs.rawImage.uri : 'https://i.ytimg.com/vi/BYx04e35Xso/maxresdefault.jpg');
           const numToAdd = (('phoneNumbers' in contactFromOs) ? contactFromOs.phoneNumbers[0].digits : '');
           const nameToAdd = (('name' in contactFromOs) ? contactFromOs.name : '');
-          console.info(contactFromOs);
+          console.log(nameToAdd);
           submit({
             name: nameToAdd, phoneNumber: numToAdd, photo: imgToAdd,
           });
