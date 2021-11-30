@@ -1,55 +1,49 @@
 import * as FileSystem from 'expo-file-system';
+import uuid from 'react-native-uuid';
 
 const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 
-console.log(contactDirectory);
-// const contactDirectory = '../resources/contacts';
-
-// const permissions = await FileSystem.requestDirectoryPermissionsAsync();
-
-// if (permissions.granted) {
-//   // Gets SAF URI from response
-//   const uri = permissions.directoryUri;
-
-//   // Gets all files inside of selected directory
-//   const files = await FileSystem.readDirectoryAsync(uri);
-//   alert(`Files inside ${uri}:\n\n${JSON.stringify(files)}`);
-// }
-
-const copyFile = async (file, newLocation) => {
-  await FileSystem.copyAsync({
-    from: file,
-    to: newLocation,
-  });
-};
+// const copyFile = async (file, newLocation) => {
+//   await FileSystem.copyAsync({
+//     from: file,
+//     to: newLocation,
+//   });
+// };
 
 const setupDirectory = async () => {
   const dir = await FileSystem.getInfoAsync(contactDirectory);
-  console.log(dir);
   if (!dir.exists) {
     await FileSystem.makeDirectoryAsync(contactDirectory);
+  } else {
+    // await FileSystem.deleteAsync(contactDirectory);
+    // await FileSystem.makeDirectoryAsync(contactDirectory);
   }
 };
 
 const loadContact = async (fileName) => {
-  // console.log('hello?');
-  // console.log(fileName);
-  await FileSystem.readDirectoryAsync(`${contactDirectory}`, {
+  const ret = JSON.parse(await FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`, {
     encoding: FileSystem.EncodingType.UTF8,
-  });
+  }));
+  return ret;
 };
 
-export const addContact = async (contactLocation) => {
-  // const folderSplit = contactLocation.split('/');
-  // const fileName = folderSplit[folderSplit.length - 1];
+export const addContact = async (contact) => {
+  const filename = `${contact.name}-${uuid.v4()}.json`;
 
-  await copyFile(contactLocation, `${contactDirectory}/${contactLocation}`);
-
-  return {
-    name: 'hello',
-    type: 'contact',
-    file: await loadContact(contactLocation),
-  };
+  FileSystem.writeAsStringAsync(`${contactDirectory}/${filename}`, JSON.stringify(contact), { encoding: FileSystem.EncodingType.UTF8 }).then(() => {
+    loadContact('Danni-1.json').then((file) => {
+      const ret = {
+        name: filename,
+        type: 'contact',
+        file,
+      };
+      return ret;
+    }).catch((err) => {
+      console.log(err.message);
+    });
+  }).catch((err) => {
+    console.log(err);
+  });
 };
 
 export const getAllContacts = async () => {
@@ -62,6 +56,5 @@ export const getAllContacts = async () => {
       name: fileName,
       type: 'contact',
       file: await loadContact(fileName),
-    }
-  ))).then((value) => console.log(value)).catch((err) => { console.error(err); });
+    })));
 };
