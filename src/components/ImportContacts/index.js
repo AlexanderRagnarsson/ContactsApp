@@ -2,13 +2,17 @@ import React from 'react';
 import {
   View, TouchableHighlight, Text,
 } from 'react-native';
+import PropTypes from 'prop-types';
+
 import * as Contactz from 'expo-contacts';
 // import styles from './styles';
 
-const ImportContacts = async (submit) => {
+const ImportContacts = (props) => {
+  const { submit } = props;
   const addContactsFromOS = async () => {
     const { status } = await Contactz.requestPermissionsAsync();
     console.log(status);
+    console.log(submit);
     if (status === 'granted') {
       const { data } = await Contactz.getContactsAsync({
         fields: [Contactz.Fields.PhoneNumbers, Contactz.Fields.RawImage],
@@ -35,6 +39,10 @@ const ImportContacts = async (submit) => {
       </TouchableHighlight>
     </View>
   );
+};
+
+ImportContacts.propTypes = {
+  submit: PropTypes.func.isRequired,
 };
 
 export default ImportContacts;
