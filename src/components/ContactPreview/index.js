@@ -7,12 +7,14 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 
 const ContactPreview = ({
-  id, name, photo, navigate,
+  id, name, phoneNumber, photo, navigate,
 }) => (
   <View style={styles.PreviewView}>
     <TouchableHighlight
       style={styles.touchable}
-      onPress={() => navigate('ContactDetails', { id })}
+      onPress={() => navigate('ContactDetails', {
+        id, name, phoneNumber, photo,
+      })}
     >
       <View style={styles.view}>
         <Animated.Image
@@ -29,6 +31,7 @@ ContactPreview.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   photo: PropTypes.string.isRequired,
+  phoneNumber: PropTypes.string.isRequired,
   navigate: PropTypes.func.isRequired,
 };
 
