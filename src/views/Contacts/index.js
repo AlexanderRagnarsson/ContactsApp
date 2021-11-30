@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, FlatList } from 'react-native';
+import {
+  View, FlatList, TouchableHighlight, Text,
+} from 'react-native';
 import PropTypes from 'prop-types';
+import * as Contactz from 'expo-contacts';
 import SearchBar from '../../components/SearchBar';
 import AddButton from '../../components/AddButton';
 import ContactPreview from '../../components/ContactPreview';
 import AddContactModal from '../../components/AddContactModal';
+// import ImportContacts from '../../components/ImportContacts';
 import styles from './styles';
 
 const Contacts = ({ navigation: { navigate } }) => {
@@ -13,6 +17,7 @@ const Contacts = ({ navigation: { navigate } }) => {
   const dispatch = useDispatch();
   // All of the contacts
   const { contacts } = useSelector((state) => state);
+  let nextId = contacts.reduce((prev, curr) => (curr.id >= prev ? (curr.id + 1) : prev), 0);
 
   // Is the modal to add a new contact open
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -63,14 +68,45 @@ const Contacts = ({ navigation: { navigate } }) => {
 
   // Add a new contact
   const submit = (newContact) => {
-    const nextId = contacts.reduce((prev, curr) => (curr.id >= prev ? (curr.id + 1) : prev), 0);
+    // console.info(newContact);
+    nextId += 1;
+
     dispatch({ type: 'ADD_CONTACT', payload: { ...newContact, id: nextId } });
+  };
+
+  const addContactsFromOS = async () => {
+    const { status } = await Contactz.requestPermissionsAsync();
+    console.log(status);
+    if (status === 'granted') {
+      const { data } = await Contactz.getContactsAsync({
+        fields: [Contactz.Fields.PhoneNumbers, Contactz.Fields.RawImage],
+      });
+      if (data.length > 0) {
+        data.forEach((contactFromOs) => {
+          const imgToAdd = (contactFromOs.imageAvailable ? contactFromOs.rawImage.uri : 'https://i.ytimg.com/vi/BYx04e35Xso/maxresdefault.jpg');
+          const numToAdd = (('phoneNumbers' in contactFromOs) ? contactFromOs.phoneNumbers[0].digits : '');
+          const nameToAdd = (('name' in contactFromOs) ? contactFromOs.name : '');
+          console.info(contactFromOs);
+          submit({
+            name: nameToAdd, phoneNumber: numToAdd, photo: imgToAdd,
+          });
+        });
+      }
+    }
   };
 
   checkContacts(search);
 
   return (
     <View style={styles.container}>
+      <TouchableHighlight
+        onPress={async () => addContactsFromOS()}
+      >
+        <Text>Import</Text>
+      </TouchableHighlight>
+      {/* <ImportContacts
+        submit={submit}
+      /> */}
       <SearchBar
         search={search}
         setSearch={updateSearch}
