@@ -1,15 +1,19 @@
+// import * as FileSystem from 'expo-file-system';
 import data from '../../resources/data.json';
 import { getAllContacts, addContact } from '../../services/fileserf';
 
 const dire = getAllContacts();
+const add = addContact('danni');
+const newDire = getAllContacts();
 
 console.log(dire);
-console.log(data);
+console.log(add);
+console.log(newDire);
 // eslint-disable-next-line default-param-last
 function Reducer(state, action) {
   if (state === undefined) {
     return {
-      ...dire,
+      ...data,
       search: '',
       addModalOpen: false,
     };
@@ -23,9 +27,6 @@ function Reducer(state, action) {
       return {
         ...state,
         search: action.payload,
-        // currentContacts: [...(state.contacts.filter(
-        //   (contact) => contact.name.includes(action.payload),
-        // ))],
       };
     case 'SET_ADD_MODAL_OPEN':
       return { ...state, addModalOpen: action.payload };

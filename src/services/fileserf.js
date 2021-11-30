@@ -1,7 +1,20 @@
 import * as FileSystem from 'expo-file-system';
 
-// const contactDirectory = `${FileSystem.documentDirectory}/contacts`;
-const contactDirectory = '../resources/contacts';
+const contactDirectory = `${FileSystem.documentDirectory}contacts`;
+
+console.log(contactDirectory);
+// const contactDirectory = '../resources/contacts';
+
+// const permissions = await FileSystem.requestDirectoryPermissionsAsync();
+
+// if (permissions.granted) {
+//   // Gets SAF URI from response
+//   const uri = permissions.directoryUri;
+
+//   // Gets all files inside of selected directory
+//   const files = await FileSystem.readDirectoryAsync(uri);
+//   alert(`Files inside ${uri}:\n\n${JSON.stringify(files)}`);
+// }
 
 const copyFile = async (file, newLocation) => {
   await FileSystem.copyAsync({
@@ -12,6 +25,7 @@ const copyFile = async (file, newLocation) => {
 
 const setupDirectory = async () => {
   const dir = await FileSystem.getInfoAsync(contactDirectory);
+  console.log(dir);
   if (!dir.exists) {
     await FileSystem.makeDirectoryAsync(contactDirectory);
   }
@@ -19,21 +33,22 @@ const setupDirectory = async () => {
 
 const loadContact = async (fileName) => {
   console.log('hello?');
+  console.log(fileName);
   await FileSystem.readAsStringAsync(`${contactDirectory}/${fileName}`, {
     encoding: FileSystem.EncodingType.Base64,
   });
 };
 
 export const addContact = async (contactLocation) => {
-  const folderSplit = contactLocation.split('/');
-  const fileName = folderSplit[folderSplit.length - 1];
+  // const folderSplit = contactLocation.split('/');
+  // const fileName = folderSplit[folderSplit.length - 1];
 
-  await copyFile(contactLocation, `${contactDirectory}/${fileName}`);
+  await copyFile(contactLocation, `${contactDirectory}/${contactLocation}`);
 
   return {
-    name: fileName,
+    name: contactLocation,
     type: 'contact',
-    file: await loadContact(fileName),
+    file: await loadContact(contactLocation),
   };
 };
 
@@ -48,5 +63,5 @@ export const getAllContacts = async () => {
       type: 'contact',
       file: await loadContact(fileName),
     }
-  )));
+  ))).then((value) => console.log(value)).catch((err) => { console.error(err); });
 };
