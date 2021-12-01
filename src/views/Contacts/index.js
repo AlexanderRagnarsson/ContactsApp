@@ -75,11 +75,6 @@ const Contacts = ({ navigation: { navigate } }) => {
 
   return (
     <View style={styles.container}>
-      {/* <TouchableHighlight
-        onPress={async () => addContactsFromOS()}
-      >
-        <Text>Import</Text>
-      </TouchableHighlight> */}
       <ImportContacts
         submit={submit}
       />
