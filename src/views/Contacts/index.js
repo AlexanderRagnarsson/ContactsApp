@@ -64,6 +64,7 @@ const Contacts = ({ navigation: { navigate } }) => {
   // Add a new contact
   const submit = (newContact) => {
     const nextId = contacts.reduce((prev, curr) => (curr.id >= prev ? (curr.id + 1) : prev), 0);
+    // console.log('Added: ', newContact);
     dispatch({ type: 'ADD_CONTACT', payload: { ...newContact, id: nextId } });
   };
 

@@ -11,7 +11,7 @@ import EditButton from '../EditButton';
 import EditContactModal from '../EditContactModal';
 
 const Contact = ({
-  name, phoneNumber, photo,
+  id, name, phoneNumber, photo,
 }) => {
   // Is the modal to add a new contact open
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -19,6 +19,7 @@ const Contact = ({
   const dispatch = useDispatch();
 
   const editSubmit = async (newContact) => {
+    // console.log('thing: ', newContact);
     dispatch({ type: 'EDIT_CONTACT', payload: newContact });
   };
 
@@ -49,7 +50,7 @@ const Contact = ({
       </TouchableHighlight>
       <EditContactModal
         contact={{
-          name, phoneNumber, photo,
+          id, name, phoneNumber, photo,
         }}
         isOpen={editModalOpen}
         closeModal={() => setEditModalOpen(false)}
@@ -61,7 +62,7 @@ const Contact = ({
 };
 
 Contact.propTypes = {
-  // id: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   phoneNumber: PropTypes.string.isRequired,
   photo: PropTypes.string.isRequired,

@@ -12,8 +12,8 @@ const EditContactModal = ({
   let setcontact = contact;
 
   if (setcontact.id !== undefined) {
-    const { boards } = useSelector((state) => state);
-    [setcontact] = boards.filter((listIt) => listIt.id === setcontact.id);
+    const { contacts } = useSelector((state) => state);
+    [setcontact] = contacts.filter((contactsId) => contactsId.id === setcontact.id);
     if (setcontact.phoneNumber === undefined) {
       setcontact.phoneNumber = '';
     }
@@ -75,6 +75,7 @@ EditContactModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default EditContactModal;

@@ -29,6 +29,7 @@ const loadContact = async (fileName) => {
 
 export const addContact = async (contact) => {
   const filename = `${contact.name}-${uuid.v4()}.json`;
+  // console.log('filename1: ', filename);
 
   FileSystem.writeAsStringAsync(`${contactDirectory}/${filename}`, JSON.stringify(contact), { encoding: FileSystem.EncodingType.UTF8 }).then(() => {
     loadContact('Danni-1.json').then((file) => {
@@ -48,7 +49,7 @@ export const addContact = async (contact) => {
 
 export const getAllContacts = async () => {
   await setupDirectory();
-
+  // console.log('ffk!!!!!!!!!!!!!');
   const result = await FileSystem.readDirectoryAsync(contactDirectory);
 
   return Promise.all(result.map(async (fileName) => (
@@ -57,4 +58,20 @@ export const getAllContacts = async () => {
       type: 'contact',
       file: await loadContact(fileName),
     })));
+};
+
+export const editContact = async (contact) => {
+  Promise.resolve(getAllContacts()).then(async (contacts) => {
+    // console.log('all contacts? ', contacts);
+    // console.log('new thing: ', contact);
+    const setContacts = contacts.filter((item) => item.file.id === contact.id);
+    // console.log('all setcontacts? ', setContacts);
+    // console.log('old file name:  ', setContacts[0].name);
+    await FileSystem.deleteAsync(`${contactDirectory}/${setContacts[0].name}`);
+    Promise.resolve(addContact(contact));
+    // Promise.resolve(getAllContacts()).then(async (contacts) => {
+    //   // console.log('NEW all contacts? ', contacts);
+    //   // console.log('fk');
+    // });
+  });
 };
