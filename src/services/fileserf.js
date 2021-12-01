@@ -10,6 +10,37 @@ const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 //   });
 // };
 
+const replacements = {
+  Á: 'A',
+  á: 'a',
+  Ð: 'D',
+  ð: 'd',
+  É: 'e',
+  é: 'e',
+  Í: 'i',
+  í: 'i',
+  Ó: 'o',
+  ó: 'o',
+  Þ: 'Th',
+  þ: 'th',
+  Æ: 'Ae',
+  æ: 'ae',
+  Ö: 'o',
+  ö: 'o',
+  ' ': '-',
+  '/': '',
+};
+
+const fixFileName = (fileName) => {
+  let fixedName = '';
+  for (let i = 0; i < fileName.length; i += 1) {
+    const letter = fileName.charAt(i);
+    fixedName += (letter in replacements ? replacements[letter] : letter);
+  }
+  return fixedName;
+  // fileName.map((letter) => (letter in replacements ? replacements[letter] : letter))
+};
+
 const setupDirectory = async () => {
   const dir = await FileSystem.getInfoAsync(contactDirectory);
   if (!dir.exists) {
@@ -28,11 +59,11 @@ const loadContact = async (fileName) => {
 };
 
 export const addContact = async (contact) => {
-  const filename = `${contact.name}-${uuid.v4()}.json`;
+  const filename = fixFileName(`${contact.name}-${uuid.v4()}.json`);
   // console.log('filename1: ', filename);
 
   FileSystem.writeAsStringAsync(`${contactDirectory}/${filename}`, JSON.stringify(contact), { encoding: FileSystem.EncodingType.UTF8 }).then(() => {
-    loadContact('Danni-1.json').then((file) => {
+    loadContact(filename).then((file) => {
       const ret = {
         name: filename,
         type: 'contact',
@@ -70,8 +101,8 @@ export const editContact = async (contact) => {
     await FileSystem.deleteAsync(`${contactDirectory}/${setContacts[0].name}`);
     Promise.resolve(addContact(contact));
     // Promise.resolve(getAllContacts()).then(async (contacts) => {
-    //   // console.log('NEW all contacts? ', contacts);
-    //   // console.log('fk');
+    //   console.log('NEW all contacts? ', contacts);
+    //   console.log('fk');
     // });
   });
 };

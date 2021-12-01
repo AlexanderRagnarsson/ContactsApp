@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   View, TouchableHighlight, Text,
 } from 'react-native';
@@ -8,6 +9,9 @@ import * as Contacts from 'expo-contacts';
 // import styles from './styles';
 
 const ImportContacts = (props) => {
+  const { contacts } = useSelector((state) => state);
+  const phonenums = new Set();
+  contacts.forEach((contact) => phonenums.add(contact.phoneNumber));
   const { submit } = props;
   const addContactsFromOS = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
@@ -20,13 +24,15 @@ const ImportContacts = (props) => {
       if (data.length > 0) {
         console.log('Importing contacts:');
         data.forEach((contactFromOs) => {
-          const imgToAdd = (contactFromOs.imageAvailable ? contactFromOs.rawImage.uri : 'https://i.ytimg.com/vi/BYx04e35Xso/maxresdefault.jpg');
+          const imgToAdd = (contactFromOs.imageAvailable ? contactFromOs.rawImage.uri : 'https://static.rankone.global/img/avatars/avatar_silhouette2.png');
           const numToAdd = (('phoneNumbers' in contactFromOs) ? contactFromOs.phoneNumbers[0].digits : '');
           const nameToAdd = (('name' in contactFromOs) ? contactFromOs.name : '');
-          console.log(nameToAdd);
-          submit({
-            name: nameToAdd, phoneNumber: numToAdd, photo: imgToAdd,
-          });
+          if (!phonenums.has(numToAdd) && nameToAdd !== '' && numToAdd !== '') {
+            submit({
+              name: nameToAdd, phoneNumber: numToAdd, photo: imgToAdd,
+            });
+            console.log(nameToAdd);
+          }
         });
       }
     }

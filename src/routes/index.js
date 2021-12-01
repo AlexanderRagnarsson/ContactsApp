@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 const Routes = () => {
   const dispatch = useDispatch();
   Promise.resolve(getAllContacts()).then((contacts) => {
-    dispatch({ type: 'ADD_CONTACTS_FROM_DATABSE', payload: contacts.map((contact) => contact.file) });
+    dispatch({ type: 'ADD_CONTACTS_FROM_DATABASE', payload: contacts.map((contact) => contact.file) });
   });
   return (
     <NavigationContainer>
