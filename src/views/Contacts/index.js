@@ -6,6 +6,7 @@ import SearchBar from '../../components/SearchBar';
 import AddButton from '../../components/AddButton';
 import ContactPreview from '../../components/ContactPreview';
 import AddContactModal from '../../components/AddContactModal';
+import ImportContacts from '../../components/ImportContacts';
 import styles from './styles';
 
 const Contacts = ({ navigation: { navigate } }) => {
@@ -13,6 +14,7 @@ const Contacts = ({ navigation: { navigate } }) => {
   const dispatch = useDispatch();
   // All of the contacts
   const { contacts } = useSelector((state) => state);
+  let nextId = contacts.reduce((prev, curr) => (curr.id >= prev ? (curr.id + 1) : prev), 0);
 
   // Is the modal to add a new contact open
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -63,8 +65,9 @@ const Contacts = ({ navigation: { navigate } }) => {
 
   // Add a new contact
   const submit = (newContact) => {
-    const nextId = contacts.reduce((prev, curr) => (curr.id >= prev ? (curr.id + 1) : prev), 0);
-    // console.log('Added: ', newContact);
+    // console.info(newContact);
+    nextId += 1;
+
     dispatch({ type: 'ADD_CONTACT', payload: { ...newContact, id: nextId } });
   };
 
@@ -72,6 +75,14 @@ const Contacts = ({ navigation: { navigate } }) => {
 
   return (
     <View style={styles.container}>
+      {/* <TouchableHighlight
+        onPress={async () => addContactsFromOS()}
+      >
+        <Text>Import</Text>
+      </TouchableHighlight> */}
+      <ImportContacts
+        submit={submit}
+      />
       <SearchBar
         search={search}
         setSearch={updateSearch}

@@ -16,6 +16,7 @@ export default StyleSheet.create({
     borderRadius: 300 / 2,
     marginLeft: 'auto',
     marginRight: 'auto',
+    borderWidth: 2,
   },
   nameView: {
     paddingVertical: 15,
