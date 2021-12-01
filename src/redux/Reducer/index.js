@@ -1,29 +1,28 @@
-import data from '../../resources/data.json';
+import { addContact, editContact } from '../../services/fileserf';
 
-// eslint-disable-next-line default-param-last
 function Reducer(state, action) {
   if (state === undefined) {
-    return {
-      ...data,
-      search: '',
-      addModalOpen: false,
-    };
+    return { contacts: [], currentContacts: [] };
   }
+  const ids = state.contacts.map((contact) => contact.id);
   switch (action.type) {
-    case 'SET_CURRENT_CONTACTS':
-      return { ...state, currentContacts: action.payload };
     case 'ADD_CONTACT':
+      Promise.resolve(addContact(action.payload));
+      // console.log('action.payload Add:   ', action.payload);
       return { ...state, contacts: [...state.contacts, action.payload] };
-    case 'SET_SEARCH':
+    case 'ADD_CONTACTS_FROM_DATABASE':
       return {
         ...state,
-        search: action.payload,
-        // currentContacts: [...(state.contacts.filter(
-        //   (contact) => contact.name.includes(action.payload),
-        // ))],
+        contacts: [...state.contacts, ...action.payload.filter((contact) => !(contact.id in ids))],
       };
-    case 'SET_ADD_MODAL_OPEN':
-      return { ...state, addModalOpen: action.payload };
+    case 'EDIT_CONTACT':
+      Promise.resolve(editContact(action.payload));
+      // console.log('action.payload Edit:   ', action.payload);
+      return {
+        ...state,
+        contacts: state.contacts.map((contact) => (
+          contact.id === action.payload.id ? action.payload : contact)),
+      };
     default:
       return state;
   }
