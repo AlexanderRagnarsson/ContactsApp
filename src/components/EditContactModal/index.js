@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux';
 import React, { useState } from 'react';
-import { TextInput, Button } from 'react-native';
+import {
+  View, Text, TextInput, Button,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import PhotoSelection from '../PhotoSelection';
@@ -20,11 +22,23 @@ const EditContactModal = ({
   }
 
   const [inputs, setInputs] = useState(setcontact);
+  const [valid, setValid] = useState({
+    name: inputs.name !== '', phoneNumber: inputs.phoneNumber !== '', photo: inputs.photo !== '',
+  });
   const inputHandler = (name, value) => {
     setInputs({
       ...inputs,
       [name]: value,
     });
+  };
+  const validationHandler = (name, value) => {
+    setValid({ ...inputs, [name]: value !== '' });
+  };
+  const validateSubmit = () => {
+    if (valid.name && valid.phoneNumber && valid.photo) {
+      submit(inputs);
+      closeModal();
+    }
   };
 
   const clearInputs = () => {
@@ -39,27 +53,50 @@ const EditContactModal = ({
       closeModal={() => { closeModal(); clearInputs(); }}
       title={title}
     >
-      <TextInput
-        styles={styles.textInput}
-        placeholder="Enter name"
-        value={inputs.name}
-        onChangeText={(textInput) => inputHandler('name', textInput)}
-      />
-      <TextInput
-        styles={styles.textInput}
-        placeholder="Enter a phone number"
-        value={inputs.phoneNumber}
-        onChangeText={(textInput) => inputHandler('phoneNumber', textInput)}
-      />
-      <PhotoSelection
-        value={inputs.photo}
-        onChange={(value) => { inputHandler('photo', value); }}
-      />
+      <View>
+        <TextInput
+          styles={styles.textInput}
+          placeholder="Enter name"
+          value={inputs.name}
+          onChangeText={(textInput) => {
+            inputHandler('name', textInput);
+            validationHandler('name', textInput);
+          }}
+        />
+        <Text style={styles.text}>
+          {valid.name ? null : 'Please enter a name'}
+        </Text>
+      </View>
+      <View>
+        <TextInput
+          styles={styles.textInput}
+          placeholder="Enter a phone number"
+          value={inputs.phoneNumber}
+          onChangeText={(textInput) => {
+            inputHandler('phoneNumber', textInput);
+            validationHandler('phoneNumber', textInput);
+          }}
+        />
+        <Text style={styles.text}>
+          {valid.phoneNumber ? null : 'Please enter a phone number'}
+        </Text>
+      </View>
+      <View>
+        <PhotoSelection
+          value={inputs.photo}
+          onChange={(value) => {
+            inputHandler('photo', value);
+            validationHandler('photo', value);
+          }}
+        />
+        <Text style={styles.text}>
+          {valid.photo ? null : 'Please select a photo'}
+        </Text>
+      </View>
       <Button
         title="Submit"
         onPress={() => {
-          submit(inputs);
-          closeModal();
+          validateSubmit();
         }}
       />
     </Modal>
