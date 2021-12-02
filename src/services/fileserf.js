@@ -21,6 +21,10 @@ const replacements = {
   í: 'i',
   Ó: 'o',
   ó: 'o',
+  Ú: 'U',
+  ú: 'u',
+  Ý: 'Y',
+  ý: 'y',
   Þ: 'Th',
   þ: 'th',
   Æ: 'Ae',
@@ -28,14 +32,17 @@ const replacements = {
   Ö: 'o',
   ö: 'o',
   ' ': '-',
-  '/': '',
 };
 
 const fixFileName = (fileName) => {
   let fixedName = '';
   for (let i = 0; i < fileName.length; i += 1) {
     const letter = fileName.charAt(i);
-    fixedName += (letter in replacements ? replacements[letter] : letter);
+    if (letter in replacements) {
+      fixedName += replacements[letter];
+    } else if (((/[a-zA-Z0-9_.-]/).test(letter))) {
+      fixedName += letter;
+    }
   }
   return fixedName;
   // fileName.map((letter) => (letter in replacements ? replacements[letter] : letter))
@@ -60,7 +67,7 @@ const loadContact = async (fileName) => {
 
 export const addContact = async (contact) => {
   const filename = fixFileName(`${contact.name}-${uuid.v4()}.json`);
-  // console.log('filename1: ', filename);
+  console.log('filename: ', filename);
 
   FileSystem.writeAsStringAsync(`${contactDirectory}/${filename}`, JSON.stringify(contact), { encoding: FileSystem.EncodingType.UTF8 }).then(() => {
     loadContact(filename).then((file) => {
