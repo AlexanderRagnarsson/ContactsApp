@@ -10,7 +10,7 @@ import styles from './styles';
 const AddContactModal = ({
   isOpen, closeModal, submit,
 }) => {
-  const [inputs, setInputs] = useState({ name: '', phoneNumber: '', photo: 'https://www.visir.is/dre/i/626D3E86D782116CB6CCF3C7888AD4A6BBD628869566F01F2838579A13A4CFAE.jpg' });
+  const [inputs, setInputs] = useState({ name: '', phoneNumber: '', photo: 'https://static.rankone.global/img/avatars/avatar_silhouette2.png' });
   const [valid, setValid] = useState({
     name: inputs.name !== '', phoneNumber: inputs.phoneNumber !== '', photo: inputs.photo !== '',
   });

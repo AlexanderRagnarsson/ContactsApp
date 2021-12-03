@@ -3,13 +3,6 @@ import uuid from 'react-native-uuid';
 
 const contactDirectory = `${FileSystem.documentDirectory}contacts`;
 
-// const copyFile = async (file, newLocation) => {
-//   await FileSystem.copyAsync({
-//     from: file,
-//     to: newLocation,
-//   });
-// };
-
 const replacements = {
   Á: 'A',
   á: 'a',
@@ -45,7 +38,6 @@ const fixFileName = (fileName) => {
     }
   }
   return fixedName;
-  // fileName.map((letter) => (letter in replacements ? replacements[letter] : letter))
 };
 
 const setupDirectory = async () => {
@@ -67,7 +59,7 @@ const loadContact = async (fileName) => {
 
 export const addContact = async (contact) => {
   const filename = fixFileName(`${contact.name}-${uuid.v4()}.json`);
-  console.log('filename: ', filename);
+  // console.log('filename: ', filename);
 
   FileSystem.writeAsStringAsync(`${contactDirectory}/${filename}`, JSON.stringify(contact), { encoding: FileSystem.EncodingType.UTF8 }).then(() => {
     loadContact(filename).then((file) => {
@@ -100,16 +92,8 @@ export const getAllContacts = async () => {
 
 export const editContact = async (contact) => {
   Promise.resolve(getAllContacts()).then(async (contacts) => {
-    // console.log('all contacts? ', contacts);
-    // console.log('new thing: ', contact);
     const setContacts = contacts.filter((item) => item.file.id === contact.id);
-    // console.log('all setcontacts? ', setContacts);
-    // console.log('old file name:  ', setContacts[0].name);
     await FileSystem.deleteAsync(`${contactDirectory}/${setContacts[0].name}`);
     Promise.resolve(addContact(contact));
-    // Promise.resolve(getAllContacts()).then(async (contacts) => {
-    //   console.log('NEW all contacts? ', contacts);
-    //   console.log('fk');
-    // });
   });
 };

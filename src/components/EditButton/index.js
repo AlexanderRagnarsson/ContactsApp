@@ -13,9 +13,7 @@ const EditButton = ({ onAdd, addString }) => (
       <Text style={styles.text}>
         {addString}
       </Text>
-      <Text>
-        <AntDesign name="edit" size={30} color="black" />
-      </Text>
+      <AntDesign name="edit" size={30} color="black" />
     </View>
   </TouchableHighlight>
 );

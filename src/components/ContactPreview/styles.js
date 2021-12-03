@@ -17,6 +17,7 @@ export default StyleSheet.create({
     borderRadius: 150 / 2,
   },
   name: {
+    flex: 1,
     fontSize: 24,
     fontWeight: 'bold',
     paddingBottom: 10,
