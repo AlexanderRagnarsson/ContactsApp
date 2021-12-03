@@ -10,6 +10,5 @@ export default StyleSheet.create({
   text: {
     fontSize: 18,
     paddingRight: 10,
-    paddingBottom: 0,
   },
 });
