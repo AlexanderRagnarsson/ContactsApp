@@ -75,17 +75,24 @@ const Contacts = ({ navigation: { navigate } }) => {
 
   return (
     <View style={styles.container}>
-      <ImportContacts
-        submit={submit}
-      />
       <SearchBar
         search={search}
         setSearch={updateSearch}
       />
-      <AddButton
-        onAdd={() => setAddModalOpen(true)}
-        addString="Add Contact"
-      />
+      <View style={styles.buttons}>
+        <View style={styles.add}>
+          <AddButton
+            onAdd={() => setAddModalOpen(true)}
+            addString="Add Contact"
+          />
+        </View>
+        <View style={styles.import}>
+          <ImportContacts
+            style={styles.import}
+            submit={submit}
+          />
+        </View>
+      </View>
       <FlatList
         numColumns={1}
         data={currentContacts}

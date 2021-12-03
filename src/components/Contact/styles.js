@@ -46,5 +46,7 @@ export default StyleSheet.create({
   },
   iconNumber: {
     flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'center',
   },
 });
